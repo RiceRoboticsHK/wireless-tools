@@ -180,13 +180,15 @@ function parse_scan(show_hidden, callback) {
  */
 function scan(options, callback) {
   var interface, show_hidden
+  var stdout_buffer = 20 * 1024;
   if (typeof options === 'string') {
     var interface = options;
     var show_hidden = false;
   } else {
     var interface = options.iface;
     var show_hidden = options.show_hidden || false;
+    var stdout_buffer = options.stdout_buffer * 1024;
   }
 
-  this.exec('iw dev ' + interface + ' scan', parse_scan(show_hidden, callback));
+  this.exec('iw dev ' + interface + ' scan', { maxBuffer: stdout_buffer }, parse_scan(show_hidden, callback));
 }
